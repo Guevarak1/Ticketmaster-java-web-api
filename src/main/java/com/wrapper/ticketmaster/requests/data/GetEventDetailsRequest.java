@@ -28,7 +28,7 @@ public class GetEventDetailsRequest extends AbstractDataRequest<Event> {
 
         @Override
         public GetEventDetailsRequest build(){
-            setPath("/events/{id}");
+            setPath("/events/{id}.json");
             return new GetEventDetailsRequest(this);
         }
     }

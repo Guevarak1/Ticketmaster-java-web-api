@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.JsonObject;
 import com.wrapper.ticketmaster.model_objects.AbstractModelObject;
 import com.wrapper.ticketmaster.model_objects.IModelObject;
+import sun.awt.EmbeddedFrame;
 
 @JsonDeserialize(builder = Event.Builder.class)
 public class Event extends AbstractModelObject {
     private final String id;
     private final String type;
-    //private final Location location;
+    private final Embedded embedded;
     private final String locale;
     private final String name;
     private final String description;
@@ -22,6 +23,7 @@ public class Event extends AbstractModelObject {
 
         this.id = builder.id;
         this.type = builder.type;
+        this.embedded = builder.embedded;
         this.locale = builder.locale;
         this.name = builder.name;
         this.description = builder.description;
@@ -31,21 +33,6 @@ public class Event extends AbstractModelObject {
         this.productType = builder.productType;
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                ", locale='" + locale + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", additionalInfo='" + additionalInfo + '\'' +
-                ", url='" + url + '\'' +
-                ", info='" + info + '\'' +
-                ", productType='" + productType + '\'' +
-                '}';
-    }
-
     public String getId() {
         return id;
     }
@@ -53,6 +40,8 @@ public class Event extends AbstractModelObject {
     public String getType() {
         return type;
     }
+
+    public Embedded getEmbedded() { return embedded; }
 
     public String getLocale() {
         return locale;
@@ -90,7 +79,7 @@ public class Event extends AbstractModelObject {
     public static final class Builder extends AbstractModelObject.Builder {
         private String id;
         private String type;
-        //private Location location;
+        private Embedded embedded;
         private String locale;
         private String name;
         private String description;
@@ -106,6 +95,11 @@ public class Event extends AbstractModelObject {
 
         public Builder setId(String id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder setEmbedded(Embedded embedded) {
+            this.embedded = embedded;
             return this;
         }
 
@@ -165,6 +159,9 @@ public class Event extends AbstractModelObject {
                     .setType(hasAndNotNull(jsonObject, "type")
                             ? jsonObject.get("type").getAsString()
                             : null)
+                    .setEmbedded(hasAndNotNull(jsonObject, "_embedded")
+                            ? new Embedded.JsonUtil().createModelObject(jsonObject.getAsJsonObject("_embedded"))
+                            : null)
                     .setLocale(hasAndNotNull(jsonObject, "locale")
                             ? jsonObject.get("locale").getAsString()
                             : null)
@@ -186,7 +183,6 @@ public class Event extends AbstractModelObject {
                     .setProductType(hasAndNotNull(jsonObject, "productType")
                             ? jsonObject.get("productType").getAsString()
                             : null)
-                    //.setLocation()
                     .build();
         }
     }
