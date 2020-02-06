@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.gson.JsonObject;
 import com.wrapper.ticketmaster.model_objects.AbstractModelObject;
 import com.wrapper.ticketmaster.model_objects.IModelObject;
-import sun.awt.EmbeddedFrame;
 
 @JsonDeserialize(builder = Event.Builder.class)
 public class Event extends AbstractModelObject {
@@ -18,6 +17,8 @@ public class Event extends AbstractModelObject {
     private final String url;
     private final String info;
     private final String productType;
+    private final Date dates;
+
     protected Event(final Builder builder) {
         super(builder);
 
@@ -31,6 +32,7 @@ public class Event extends AbstractModelObject {
         this.url = builder.url;
         this.info = builder.info;
         this.productType = builder.productType;
+        this.dates = builder.dates;
     }
 
     public String getId() {
@@ -41,7 +43,9 @@ public class Event extends AbstractModelObject {
         return type;
     }
 
-    public Embedded getEmbedded() { return embedded; }
+    public Embedded getEmbedded() {
+        return embedded;
+    }
 
     public String getLocale() {
         return locale;
@@ -76,6 +80,10 @@ public class Event extends AbstractModelObject {
         return new Builder();
     }
 
+    public Date getDates() {
+        return dates;
+    }
+
     public static final class Builder extends AbstractModelObject.Builder {
         private String id;
         private String type;
@@ -87,6 +95,7 @@ public class Event extends AbstractModelObject {
         private String url;
         private String info;
         private String productType;
+        private Date dates;
 
         public Builder setType(String type) {
             this.type = type;
@@ -138,6 +147,11 @@ public class Event extends AbstractModelObject {
             return this;
         }
 
+        public Builder setDates(Date dates) {
+            this.dates = dates;
+            return this;
+        }
+
         @Override
         public Event build() {
             return new Event(this);
@@ -182,6 +196,9 @@ public class Event extends AbstractModelObject {
                             : null)
                     .setProductType(hasAndNotNull(jsonObject, "productType")
                             ? jsonObject.get("productType").getAsString()
+                            : null)
+                    .setDates(hasAndNotNull(jsonObject, "dates")
+                            ? new Date.JsonUtil().createModelObject(jsonObject.get("dates").getAsJsonObject())
                             : null)
                     .build();
         }
