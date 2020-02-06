@@ -18,6 +18,10 @@ public class City extends AbstractModelObject {
         return new Builder();
     }
 
+    public String getName() {
+        return name;
+    }
+
     public static final class Builder extends AbstractModelObject.Builder {
         private String name;
 

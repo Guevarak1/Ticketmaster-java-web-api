@@ -14,7 +14,7 @@ public class Venue extends AbstractModelObject {
     private final Country country;
     private final Address address;
     private final Location location;
-    //maybe include general info?
+    //mising: box office info, parking details, accessible seating details, general info,
 
     public Venue(Builder builder) {
         super(builder);
@@ -25,6 +25,26 @@ public class Venue extends AbstractModelObject {
         this.country = builder.country;
         this.address = builder.address;
         this.location = builder.location;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public String getId() {
